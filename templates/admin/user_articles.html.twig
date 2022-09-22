@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+<main class="admin_container">
+  <h1>Bonjour {{ app.user.username }}</h1>
+
+  {% if articles|length >= 1 %}
+    <h2>Articles postés</h2>
+    <table id="admin_users_table">
+      <tbody>
+        <tr>
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Hashtag</th>
+            <th>Date</th>
+            <th>Heure</th>
+            <th>Action</th>
+        </tr>
+
+        {% for article in articles %}
+        <tr>
+            <td>{{ article.id }}</td>
+            <td>{{ article.title|capitalize }}</td>
+            <td>{{ article.hashtag }}</td>
+            <td>{{ article.createdAt|date("d/m/Y") }}</td>
+            <td>{{ article.createdAt|date("H:m") }}</td>
+            <td>
+              <a href="{{ path('app_homepage_detail', {'id' : article.id})}}">[Voir]</a>
+              <a href="{{ path('app_admin_delete_user', {'id' : article.id})}}">[Supprimer]</a>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p>Cet utilisateur n'a pas encore rédigé de commentaire.</p>
+    {% endif %}
+
+  {% if comments|length >= 1 %}
+    <h2>Commentaires postés</h2>
+    <table id="admin_users_table">
+      <tbody>
+        <tr>
+          <th>Id</th>
+          <th>Contenu</th>
+          <th>Date</th>
+          <th>Heure</th>
+          <th>Action</th>
+        </tr>
+
+        {% for comment in comments %}
+        <tr>
+            <td>{{ comment.id }}</td>
+            <td>{{ comment.content|capitalize }}</td>
+            <td>{{ comment.createdAt|date("d/m/Y") }}</td>
+            <td>{{ comment.createdAt|date("H:m") }}</td>
+            <td>
+              <a href="{{ path('app_homepage_detail', {'id' : comment.id})}}">[Voir]</a>
+              <a href="{{ path('app_admin_delete_user_comment', {'id' : comment.id})}}">[Supprimer]</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  {% else %}
+    <p>Cet utilisateur n'a pas encore rédigé de commentaire.</p>
+  {% endif %}
+</main>
+{% endblock %}

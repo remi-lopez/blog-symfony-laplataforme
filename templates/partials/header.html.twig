@@ -1,0 +1,21 @@
+<header>
+  <menu class="base_menu">
+    <nav class="base_menu_nav">
+      <a href="{{ path('app_homepage')}}" class="nav_logo">BLOG</a>
+
+      <div class="nav_wrapper">
+        {% if app.user %}
+          {% if is_granted("ROLE_ADMIN") %}
+          <a href="{{ path('app_admin_index')}}">Dashboard</a>
+          {% else %}
+          <a href="{{ path('app_dashboard_index')}}">Dashboard</a>
+          {% endif %}
+          <a href="{{ path('app_logout')}}">Deconnexion</a>
+        {% else %}
+          <a href="{{ path('app_login')}}">Connexion</a>
+          <a href="{{ path('app_register')}}">Inscription</a>
+        {% endif %}
+      </div>
+    </nav>
+  </menu>
+</header>

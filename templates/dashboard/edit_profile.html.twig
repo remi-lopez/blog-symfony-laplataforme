@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog - Votre espace membre - Ajouter un article{% endblock %}
+
+{% block body %}
+<main class="add_article_container">
+  <h1 class="add_article_titles">Modifier votre profil</h1>
+
+  <section class="add_article_forms">
+    {{ form_start(usernameForm) }}
+      {{ form_row(usernameForm.username, { label: 'Nom d\'utilisateur' }) }}
+
+      <button type="submit" class="btn">Modifier</button>
+    {{ form_end(usernameForm) }}
+  </section>
+
+  <section class="add_article_forms margin_top">
+    {{ form_start(emailForm) }}
+      {{ form_row(emailForm.email, { label: 'Email' }) }}
+
+      <button type="submit" class="btn">Modifier</button>
+    {{ form_end(emailForm) }}
+  </section>
+
+  <a class="add_article_goback" href="{{ path('app_dashboard_index')}}">Annuler</a>
+</main>
+{% endblock %}

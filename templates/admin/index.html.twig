@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+<main class="admin_container">
+    <h1>Bonjour {{ app.user.username }}</h1>
+
+    <table id="admin_users_table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+
+        {% for user in users %}
+        {% if user.id != app.user.id %}
+        <tr>
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td>
+                <a href="{{ path('app_admin_read_user', {'id' : user.id})}}">[Plus d'infos]</a>
+                <a href="{{ path('app_admin_delete_user', {'id' : user.id})}}">[Supprimer]</a>
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+</main>
+{% endblock %}

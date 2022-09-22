@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog - Votre espace membre{% endblock %}
+
+{% block body %}
+
+<main class="dashboard">
+    <h1 class="dashboard_title">Bonjour {{ app.user.username }} </h1>
+
+    <menu class="dashboard_add_article">
+        <nav>
+            {% if app.user %}
+                <a href="{{ path('app_dashboard_add_article')}}">Ajouter un article</a>
+                <a href="{{ path('app_dashboard_edit_profile', {"id" : app.user.id})}}">Modifier mon profil</a>
+            {% endif %}
+        </nav>
+    </menu>
+
+    <section class="dashboard_articles_list">
+        <h2>Vos précédents articles :</h2>
+
+        <article class="dashboard_articles_wrapper">
+        {% for article in articles %}
+            <section class="dashboard_articles_item">
+                <h3 class="dashboard_articles_item_title">{{ article.title|capitalize }}</h3>
+                <p class="dashboard_articles_item_content">{{ article.content|length > 100 ? article.content|slice(0, 100) ~ '...' : article.content }}</p>
+                <p class="dashboard_articles_item_hashtag">{{ article.hashtag }}</p>
+
+                <article class="dashboard_articles_item_anchors">
+                    <a class="dashboard_articles_item_anchor_update" href="{{ path('app_dashboard_update_article', {"id" : article.id})}}">Modifier</a>
+                    <a class="dashboard_articles_item_anchor_delete" href="{{ path('app_dashboard_delete_article', {"id" : article.id})}}">Supprimer</a>
+                </article>
+            </section>
+        {% endfor %}
+        <article>
+    </section>
+</main>
+{% endblock %}

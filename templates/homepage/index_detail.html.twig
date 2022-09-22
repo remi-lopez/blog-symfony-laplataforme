@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog{% endblock %}
+
+{% block body %}
+  <main class="article_detail_container">
+    <h1 class="article_detail_title">{{ article.title|capitalize }}</h1>
+
+    <section class="a_detail_wrapper">
+      <p class="a_detail_need_login">Pour poster des articles et/ou commenter les articles des autres utilisateurs, <a href="{{ path('app_login')}}">connectez</a> vous à votre compte.</p>
+
+      <article class="a_detail_wrapper_item">
+        <p class="articles_item_date"><span class="emoji">&#x1F552;</span>Posté le {{ article.createdAt|date("d/m/Y") }} à {{ article.createdAt|date("H:m") }} par {{ article.user.username }}</p>
+        <p class="a_detail_item_content">{{ article.content|nl2br }}</p>
+        <p class="a_detail_item_hastag">Article classé dans la catégorie : {{ article.hashtag|capitalize }}</p>
+      </article>
+    <section>
+
+    <section class="article_detail_comments">
+      <h2 class="a_detail_comments_title">Commentaires</h2>
+
+      <article>
+        {% for comment in comments %}
+          <section class="a_detail_comment_item">
+            <p class="a_detail_comment_item_name">Posté par {{ comment.user.username}}, le {{ comment.createdAt|date("d/m/Y") }} à {{ comment.createdAt|date("H:m") }}</p>
+            <p class="a_detail_comment_item_content">{{ comment.content }}</p>
+            {% if comment.user.id is same as(app.user.id) %}
+              <a href="{{ path('delete_comment', {'id' : comment.id})}}" class="a_detail_comment_delete">Supprimer</a>
+            {% endif %}
+          </section>
+        {% endfor %}
+      </article>
+
+        {% if app.user %}
+          <article class="a_detail_add_comment">
+            {{ form_start(commentForm) }}
+              {{ form_row(commentForm.content, { label: 'Rédiger un commentaire' }) }}
+
+              <button type="submit" class="btn">Enregistrer</button>
+            {{ form_end(commentForm) }}
+          </article>
+        {% endif %}
+    </section>
+
+    {% if article_hashtag %}
+      <section class="article_detail_next">
+        <h2>Articles relatifs à {{ article.hashtag|capitalize }}</h2>
+      {% for hashtag in article_hashtag %}
+        {% if hashtag.id != article.id %}
+          <article class="a_detail_next_wrapper">
+            <h3 class="a_detail_next_title"><a href="{{ path('app_homepage_detail', {"id" : hashtag.id})}}">{{ hashtag.title|capitalize }}</a></h3>
+            <p class="a_detail_next_content">{{ hashtag.content|length > 70 ? article.content|slice(0, 70) ~ '...' : article.content }}</p>
+            <p class="a_detail_next_date">Posté le {{ hashtag.createdAt|date("d/m/Y") }} par {{ hashtag.user.username }}</p>
+          </article>
+        {% endif %}
+      {% endfor %}
+      </section>
+    {% endif %}
+  </main>
+{% endblock %}

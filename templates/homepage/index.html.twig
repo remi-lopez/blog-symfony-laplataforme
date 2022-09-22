@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BlogR{% endblock %}
+
+{% block body %}
+<main class="homepage_container">
+    <section class="homepage_hero">
+        <h1>BlogR</h1>
+
+        <p>Bienvenu.e.s sur BlogR, un blog qui recense divers articles sur la tech, le développement ou encore du Lorem Ipsum (c'est normal, notre stagiaire fait ses tests en prod).</p>
+    </section>
+
+    <section class="homepage_articles">
+    {% for article in articles %}
+        <article class="homepage_articles_item">
+            <h3 class="articles_item_title"><a href="{{ path('app_homepage_detail', {"id" : article.id})}}">{{ article.title|capitalize }}</a></h3>
+            <p class="articles_item_date"><span class="emoji">&#x1F552;</span>Posté le {{ article.createdAt|date("d/m/Y") }} par {{ article.user.username }}</p>
+
+            <p class="articles_item_content">{{ article.content|length > 100 ? article.content|slice(0, 100) ~ '...' : article.content }}</p>
+
+            <p class="articles_item_hashtag">Article classé dans la catégorie : <span>{{ article.hashtag|capitalize }}</span></p>
+        </article>
+    {% endfor %}
+    </section>
+</main>
+{% endblock %}

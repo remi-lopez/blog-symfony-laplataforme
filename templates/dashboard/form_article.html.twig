@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog - Votre espace membre - Ajouter un article{% endblock %}
+
+{% block body %}
+<main class="add_article_container">
+    {% if update is defined %}
+        <h1 class="add_article_titles">Modifier un article</h1>
+
+        <section class="add_article_forms">
+        {{ form_start(formUpdate) }}
+            {{ form_row(formUpdate.title, { label: 'Titre' }) }}
+            {{ form_row(formUpdate.content, { label: 'Contenu' }) }}
+            {{ form_row(formUpdate.hashtag, { label: 'Hashtag' }) }}
+
+            <button type="submit" class="btn">Modifier</button>
+        {{ form_end(formUpdate) }}
+        </section>
+
+        <a class="add_article_goback" href="{{ path('app_dashboard_index')}}">Annuler</a>
+    {% else %}
+        <h1 class="add_article_titles">Ajouter un article</h1>
+
+        <section class="add_article_forms">
+        {{ form_start(addArticleForm) }}
+            {{ form_row(addArticleForm.title, { label: 'Titre' }) }}
+            {{ form_row(addArticleForm.content, { label: 'Contenu' }) }}
+            {{ form_row(addArticleForm.hashtag, { label: 'Hashtag' }) }}
+
+            <button type="submit" class="btn">Enregistrer</button>
+        {{ form_end(addArticleForm) }}
+        </section>
+
+        <a class="add_article_goback" href="{{ path('app_dashboard_index')}}">Annuler</a>
+    {% endif %}
+</main>
+{% endblock %}
