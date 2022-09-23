@@ -28,7 +28,7 @@
             <td>{{ article.createdAt|date("H:m") }}</td>
             <td>
               <a href="{{ path('app_homepage_detail', {'id' : article.id})}}">[Voir]</a>
-              <a href="{{ path('app_admin_delete_user', {'id' : article.id})}}">[Supprimer]</a>
+              <a href="{{ path('app_admin_delete_user_article', {'id' : article.id})}}">[Supprimer]</a>
             </td>
         </tr>
         {% endfor %}
@@ -57,7 +57,6 @@
             <td>{{ comment.createdAt|date("d/m/Y") }}</td>
             <td>{{ comment.createdAt|date("H:m") }}</td>
             <td>
-              <a href="{{ path('app_homepage_detail', {'id' : comment.id})}}">[Voir]</a>
               <a href="{{ path('app_admin_delete_user_comment', {'id' : comment.id})}}">[Supprimer]</a>
             </td>
         </tr>

@@ -34,10 +34,10 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Articles::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Articles::class, orphanRemoval: true)]
     private Collection $articles;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comments::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comments::class, orphanRemoval:true)]
     private Collection $comments;
 
     public function __construct()

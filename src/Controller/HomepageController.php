@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Comments;
-use App\Entity\Articles;
 use App\Entity\Users;
 use App\Repository\ArticlesRepository;
 use App\Repository\CommentsRepository;
@@ -36,22 +35,20 @@ class HomepageController extends AbstractController
         /** @var Users $user */
         $user = $this->getUser();
 
-
-            $comment = new Comments();
-            $form = $this->createForm(AddCommentFormType::class, $comment);
-            $form->handleRequest($request);
+        $comment = new Comments();
+        $form = $this->createForm(AddCommentFormType::class, $comment);
+        $form->handleRequest($request);
     
-            if ($form->isSubmitted() && $form->isValid()) {
-                $comment->setCreatedAt(new \DateTimeImmutable('now'));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new \DateTimeImmutable('now'));
+            $comment->setUser($user)
+                    ->setArticle($article);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash("success", "Votre commentaire à bien été enregistré !");
     
-                $comment->setUser($user)
-                        ->setArticle($article);
-                $entityManager->persist($comment);
-                $entityManager->flush();
-                $this->addFlash("success", "Votre commentaire à bien été enregistré !");
-    
-                return $this->redirect($request->getUri());
-            }
+            return $this->redirect($request->getUri());
+        }
 
         return $this->render('homepage/index_detail.html.twig', [
             'article' => $article,
@@ -66,10 +63,12 @@ class HomepageController extends AbstractController
         {
             /** @var Users $user */
             $user = $this->getUser();
+
             $comment_from_user = $repository->findOneBy([
                 'user' => $user->getId(),
                 'id' => $id,
-                ]);
+            ]);
+
             if($comment_from_user) {
                 $entityManager->remove($comment);
                 $entityManager->flush();
