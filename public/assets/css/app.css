@@ -6,6 +6,7 @@
   --color: #fCA751;
   --red: #E31912;
   --white: #FFFFFF;
+  --darkerwhite: #F3F3F3;
 }
 *,
 *::before,
@@ -489,7 +490,17 @@ a {
 .admin_container h1 {
   width: 90%;
   margin: 0 auto;
+  text-transform: uppercase;
 }
+.admin_container h2,
+.admin_container p {
+  width: 90%;
+  margin: 50px auto 0 auto;
+  padding: 20px 0 0 0;
+  border-top: 1px solid var(--black);
+  font-weight: 400;
+}
+
 #admin_users_table {
   width: 90%;
   margin: 50px auto;
@@ -499,12 +510,21 @@ a {
   background-color: var(--color);
   color: var(--white);
   text-align: left;
+  position: sticky;
+  top: 0;
 }
 #admin_users_table tr:nth-child(even) {
   background-color: var(--white);
 }
+#admin_users_table tr:nth-child(odd) {
+  background-color: var(--darkerwhite);
+}
 #admin_users_table td {
   padding: 10px 6px;
+}
+.admin_table_delete {
+  margin-left: 10px;
+  color: var(--red);
 }
 
 

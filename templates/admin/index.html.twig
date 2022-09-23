@@ -6,6 +6,8 @@
 <main class="admin_container">
     <h1>Bonjour {{ app.user.username }}</h1>
 
+    <h2>Utilisateurs inscrits</h2>
+
     <table id="admin_users_table">
         <tbody>
         <tr>
@@ -23,7 +25,7 @@
             <td>{{user.email}}</td>
             <td>
                 <a href="{{ path('app_admin_read_user', {'id' : user.id})}}">[Plus d'infos]</a>
-                <a href="{{ path('app_admin_delete_user', {'id' : user.id})}}">[Supprimer]</a>
+                <a class="admin_table_delete" href="{{ path('app_admin_delete_user', {'id' : user.id})}}">[Supprimer]</a>
             </td>
         </tr>
         {% endif %}

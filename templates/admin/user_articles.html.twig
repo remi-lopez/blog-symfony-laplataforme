@@ -28,14 +28,14 @@
             <td>{{ article.createdAt|date("H:m") }}</td>
             <td>
               <a href="{{ path('app_homepage_detail', {'id' : article.id})}}">[Voir]</a>
-              <a href="{{ path('app_admin_delete_user_article', {'id' : article.id})}}">[Supprimer]</a>
+              <a class="admin_table_delete" href="{{ path('app_admin_delete_user_article', {'id' : article.id})}}">[Supprimer]</a>
             </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
     {% else %}
-      <p>Cet utilisateur n'a pas encore rédigé de commentaire.</p>
+      <p>Cet utilisateur n'a pas encore rédigé d'article.</p>
     {% endif %}
 
   {% if comments|length >= 1 %}
@@ -57,7 +57,7 @@
             <td>{{ comment.createdAt|date("d/m/Y") }}</td>
             <td>{{ comment.createdAt|date("H:m") }}</td>
             <td>
-              <a href="{{ path('app_admin_delete_user_comment', {'id' : comment.id})}}">[Supprimer]</a>
+              <a class="admin_table_delete" href="{{ path('app_admin_delete_user_comment', {'id' : comment.id})}}">[Supprimer]</a>
             </td>
         </tr>
         {% endfor %}
