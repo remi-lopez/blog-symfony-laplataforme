@@ -8,6 +8,7 @@ use App\Form\AddArticleFormType;
 use App\Form\EditUsernameFormType;
 use App\Form\EditEmailFormType;
 use App\Repository\ArticlesRepository;
+use App\Repository\CommentsRepository;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -64,8 +65,18 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/updatearticle/{id}', name: 'update_article')]
-    public function updateArticle(Request $request, EntityManagerInterface $entityManager, Articles $article): Response
+    public function updateArticle(Request $request, EntityManagerInterface $entityManager, Articles $article, ArticlesRepository $repository): Response
     {
+        /** @var Users $user */
+        $user = $this->getUser();
+
+        $user_article = $repository->findOneBy(['id' => $article,'user' => $user]);
+
+        if(!$user_article) {
+            $this->addFlash("success", "Cet article ne vous appartient pas !");
+            return $this->redirectToRoute('app_dashboard_index');
+        }
+
         $formUpdate = $this->createForm(AddArticleFormType::class, $article);
         $formUpdate->handleRequest($request);
 
@@ -89,17 +100,33 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/deletearticle/{id}', name: 'delete_article')]
-    public function deleteArticle(EntityManagerInterface $entityManager, ArticlesRepository $repository, Articles $article): Response
+    public function deleteArticle(EntityManagerInterface $entityManager, ArticlesRepository $repository, Articles $article, CommentsRepository $comments_repository): Response
     {
         /** @var Users $user */
         $user = $this->getUser();
-        $article_from_user = $repository->findOneBy(['user' => $user->getId()]);
 
-        if($article_from_user) {
-            $entityManager->remove($article);
-            $entityManager->flush();
-            $this->addFlash("success", "L'article à bien été supprimé");
+        $user_article = $repository->findOneBy(['id' => $article,'user' => $user]);
+
+        if(!$user_article) {
+            $this->addFlash("success", "Cet article ne vous appartient pas !");
             return $this->redirectToRoute('app_dashboard_index');
+        } else {
+            $comments_exists = $comments_repository->findBy(['article' => $article]);
+
+            if(!$comments_exists) {
+                $entityManager->remove($article);
+                $entityManager->flush();
+                $this->addFlash("success", "L'article à bien été supprimé");
+                return $this->redirectToRoute('app_dashboard_index');
+            } else {
+                foreach ($comments_exists as $comment) {
+                    $entityManager->remove($comment);
+                }
+                $entityManager->remove($article);
+                $entityManager->flush();
+                $this->addFlash("success", "Les commentaires et votre article ont été supprimés");
+                return $this->redirectToRoute('app_dashboard_index');
+            }
         }
     }
 
